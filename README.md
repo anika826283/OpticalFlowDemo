@@ -1,89 +1,89 @@
 # OpticalFlowDemo
 
-基於 GMFlow 的光流估計示範專案
+GMFlow-based Optical Flow Estimation Demo Project
 
-## 簡介
+## Introduction
 
-本專案實作了 GMFlow (Global Matching Flow) 的 inference 功能，用於估計連續影像之間的光流（Optical Flow）。GMFlow 是一個基於全局匹配的深度學習光流估計方法，發表於 CVPR 2022。
+This project implements the inference functionality of GMFlow (Global Matching Flow) for estimating optical flow between consecutive images. GMFlow is a deep learning-based optical flow estimation method based on global matching, presented at CVPR 2022.
 
-## 專案結構
+## Project Structure
 
 ```
 OpticalFlowDemo/
-├── gmflow/                    # GMFlow 模型實作
+├── gmflow/                    # GMFlow model implementation
 │   ├── __init__.py
-│   ├── gmflow.py             # 主模型
-│   ├── backbone.py           # CNN 特徵提取網路
-│   ├── transformer.py        # Transformer 模組
-│   └── geometry.py           # 幾何工具函數
+│   ├── gmflow.py             # Main model
+│   ├── backbone.py           # CNN feature extraction network
+│   ├── transformer.py        # Transformer module
+│   └── geometry.py           # Geometry utility functions
 ├── data/
-│   ├── input/                # 輸入影像目錄
-│   └── output/               # 輸出結果目錄
-├── checkpoints/              # 模型權重目錄
-├── inference.py              # 主要的 inference 腳本
-├── example.py                # 範例程式碼
-├── utils.py                  # 工具函數
-├── requirements.txt          # Python 依賴套件
-└── README.md                 # 本文件
+│   ├── input/                # Input images directory
+│   └── output/               # Output results directory
+├── checkpoints/              # Model weights directory
+├── inference.py              # Main inference script
+├── example.py                # Example code
+├── utils.py                  # Utility functions
+├── requirements.txt          # Python dependencies
+└── README.md                 # This file
 ```
 
-## 環境建置
+## Environment Setup
 
-### 系統需求
+### System Requirements
 
-- Python 3.8 或以上
-- CUDA 11.0 或以上（若使用 GPU）
-- 4GB+ RAM（CPU 模式）或 4GB+ VRAM（GPU 模式）
+- Python 3.8 or higher
+- CUDA 11.0 or higher (if using GPU)
+- 4GB+ RAM (CPU mode) or 4GB+ VRAM (GPU mode)
 
-### 步驟 1: 安裝 Python 環境
+### Step 1: Install Python Environment
 
-建議使用虛擬環境來管理依賴套件：
+We recommend using a virtual environment to manage dependencies:
 
 ```bash
-# 建立虛擬環境
+# Create virtual environment
 python -m venv venv
 
-# 啟動虛擬環境
+# Activate virtual environment
 # Linux/Mac:
 source venv/bin/activate
 # Windows:
 venv\Scripts\activate
 ```
 
-### 步驟 2: 安裝依賴套件
+### Step 2: Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-依賴套件包含：
-- `torch>=2.0.0` - PyTorch 深度學習框架
-- `torchvision>=0.15.0` - PyTorch 視覺工具
-- `numpy>=1.21.0` - 數值計算
-- `opencv-python>=4.5.0` - 影像處理
-- `pillow>=9.0.0` - 影像 I/O
-- `matplotlib>=3.5.0` - 視覺化
-- `einops>=0.6.0` - 張量操作
-- `timm>=0.9.0` - 視覺模型工具
+Dependencies include:
+- `torch>=2.0.0` - PyTorch deep learning framework
+- `torchvision>=0.15.0` - PyTorch vision utilities
+- `numpy>=1.21.0` - Numerical computing
+- `opencv-python>=4.5.0` - Image processing
+- `pillow>=9.0.0` - Image I/O
+- `matplotlib>=3.5.0` - Visualization
+- `einops>=0.6.0` - Tensor operations
+- `timm>=0.9.0` - Vision model utilities
 
-### 步驟 3: （可選）下載預訓練權重
+### Step 3: (Optional) Download Pretrained Weights
 
-為了獲得最佳效果，建議下載官方預訓練權重：
+For best results, we recommend downloading the official pretrained weights:
 
-1. 訪問 [GMFlow GitHub](https://github.com/haofeixu/gmflow)
-2. 下載預訓練模型（例如：`gmflow_sintel-0c07dcb3.pth`）
-3. 將權重檔案放置於 `checkpoints/` 目錄
+1. Visit [GMFlow GitHub](https://github.com/haofeixu/gmflow)
+2. Download pretrained model (e.g., `gmflow_sintel-0c07dcb3.pth`)
+3. Place the weight file in the `checkpoints/` directory
 
 ```bash
-# 範例（需要根據實際下載連結調整）
+# Example (adjust download link as needed)
 cd checkpoints
 wget https://github.com/haofeixu/gmflow/releases/download/v0.1/gmflow_sintel-0c07dcb3.pth
 cd ..
 ```
 
-## 使用方法
+## Usage
 
-### 方法 1: 使用命令列腳本
+### Method 1: Command Line Script
 
 ```bash
 python inference.py \
@@ -94,29 +94,29 @@ python inference.py \
     --device cuda
 ```
 
-參數說明：
-- `--img0`: 第一張影像的路徑（必需）
-- `--img1`: 第二張影像的路徑（必需）
-- `--checkpoint`: 模型權重檔案路徑（可選，若不提供則使用隨機初始化權重）
-- `--output_dir`: 輸出目錄（預設：`data/output`）
-- `--device`: 運算裝置，`cuda` 或 `cpu`（預設：`cuda`）
+Parameter descriptions:
+- `--img0`: Path to first image (required)
+- `--img1`: Path to second image (required)
+- `--checkpoint`: Path to model checkpoint file (optional, uses random initialization if not provided)
+- `--output_dir`: Output directory (default: `data/output`)
+- `--device`: Computing device, `cuda` or `cpu` (default: `cuda`)
 
-### 方法 2: 使用範例程式
+### Method 2: Run Example Script
 
-執行範例程式來測試模型（使用合成影像）：
+Run the example script to test the model (uses synthetic images):
 
 ```bash
 python example.py
 ```
 
-### 方法 3: 在程式碼中使用
+### Method 3: Use in Code
 
 ```python
 import torch
 from gmflow import GMFlow
 from utils import load_image, prepare_image_tensor, visualize_flow, pad_image, unpad_flow
 
-# 初始化模型
+# Initialize model
 model = GMFlow(
     num_scales=1,
     feature_channels=128,
@@ -128,11 +128,11 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 model.to(device)
 model.eval()
 
-# 載入影像
+# Load images
 img0 = load_image('path/to/img0.jpg')
 img1 = load_image('path/to/img1.jpg')
 
-# 轉換為張量
+# Convert to tensors
 img0_tensor = prepare_image_tensor(img0).to(device)
 img1_tensor = prepare_image_tensor(img1).to(device)
 
@@ -140,43 +140,43 @@ img1_tensor = prepare_image_tensor(img1).to(device)
 img0_padded, pad = pad_image(img0_tensor, divisor=8)
 img1_padded, _ = pad_image(img1_tensor, divisor=8)
 
-# 執行推理
+# Run inference
 with torch.no_grad():
     flow = model.inference(img0_padded, img1_padded)
 
-# 移除 padding
+# Remove padding
 flow = unpad_flow(flow, pad)
 
-# 視覺化
+# Visualize
 flow_vis = visualize_flow(flow[0])
 ```
 
-## 輸出說明
+## Output Description
 
-inference 腳本會產生兩個輸出檔案：
+The inference script generates two output files:
 
-1. `*_flow_vis.png` - 光流的視覺化結果
-   - 使用色彩編碼表示光流的方向和大小
-   - 色調（Hue）表示方向
-   - 亮度（Value）表示流動強度
+1. `*_flow_vis.png` - Flow visualization
+   - Uses color encoding to represent flow direction and magnitude
+   - Hue represents direction
+   - Value represents flow intensity
 
-2. `*_flow.npy` - 原始光流數據
-   - NumPy 陣列格式
-   - 形狀：`[2, H, W]`，其中 `[0]` 為 x 方向流動，`[1]` 為 y 方向流動
+2. `*_flow.npy` - Raw flow data
+   - NumPy array format
+   - Shape: `[2, H, W]`, where `[0]` is x-direction flow, `[1]` is y-direction flow
 
-## 效能說明
+## Performance
 
-- **GPU 模式**（推薦）：
-  - 輸入解析度 640×480：約 50-100ms（視 GPU 型號而定）
-  - 需要約 2-4GB VRAM
+- **GPU Mode** (recommended):
+  - Input resolution 640×480: ~50-100ms (depending on GPU model)
+  - Requires ~2-4GB VRAM
 
-- **CPU 模式**：
-  - 輸入解析度 640×480：約 2-5 秒
-  - 需要約 4GB RAM
+- **CPU Mode**:
+  - Input resolution 640×480: ~2-5 seconds
+  - Requires ~4GB RAM
 
-## 參考文獻
+## Citation
 
-如果您使用本專案，請引用原始 GMFlow 論文：
+If you use this project, please cite the original GMFlow paper:
 
 ```bibtex
 @inproceedings{xu2022gmflow,
@@ -188,40 +188,40 @@ inference 腳本會產生兩個輸出檔案：
 }
 ```
 
-## 相關資源
+## Related Resources
 
-- [GMFlow 官方 GitHub](https://github.com/haofeixu/gmflow)
-- [GMFlow 論文](https://arxiv.org/abs/2111.13680)
-- [CVPR 2022 論文](https://openaccess.thecvf.com/content/CVPR2022/papers/Xu_GMFlow_Learning_Optical_Flow_via_Global_Matching_CVPR_2022_paper.pdf)
+- [GMFlow Official GitHub](https://github.com/haofeixu/gmflow)
+- [GMFlow Paper](https://arxiv.org/abs/2111.13680)
+- [CVPR 2022 Paper](https://openaccess.thecvf.com/content/CVPR2022/papers/Xu_GMFlow_Learning_Optical_Flow_via_Global_Matching_CVPR_2022_paper.pdf)
 
-## 授權
+## License
 
-本專案僅供學習和研究使用。原始 GMFlow 模型的授權請參考官方 repository。
+This project is for learning and research purposes only. Please refer to the official repository for the original GMFlow model license.
 
-## 常見問題
+## FAQ
 
-### Q: 沒有 GPU 可以執行嗎？
+### Q: Can I run this without a GPU?
 
-A: 可以！使用 `--device cpu` 參數即可在 CPU 上執行，但速度會較慢。
+A: Yes! Use the `--device cpu` parameter to run on CPU, though it will be slower.
 
-### Q: 支援哪些影像格式？
+### Q: What image formats are supported?
 
-A: 支援常見的影像格式，包括 PNG, JPG, JPEG, BMP 等。
+A: Common image formats including PNG, JPG, JPEG, BMP, etc.
 
-### Q: 如何提升執行速度？
-
-A:
-1. 使用 GPU（CUDA）
-2. 降低輸入影像解析度
-3. 使用預訓練權重（可能影響準確度）
-
-### Q: 遇到 CUDA out of memory 錯誤怎麼辦？
+### Q: How to improve execution speed?
 
 A:
-1. 降低輸入影像解析度
-2. 使用 CPU 模式
-3. 關閉其他使用 GPU 的程式
+1. Use GPU (CUDA)
+2. Reduce input image resolution
+3. Use pretrained weights (may affect accuracy)
 
-## 聯絡資訊
+### Q: What if I get a CUDA out of memory error?
 
-如有問題或建議，歡迎開啟 Issue 討論。
+A:
+1. Reduce input image resolution
+2. Use CPU mode
+3. Close other programs using GPU
+
+## Contact
+
+For questions or suggestions, please open an Issue for discussion.
